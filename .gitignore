@@ -4,3 +4,8 @@
 *.jar
 *.war
 *.ear
+
+
+# Other files that shouldn't be part of a repository
+*.tgz
+
