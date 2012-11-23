@@ -19,8 +19,6 @@
 
 package com.interacciones.mxcashmarketdata.driver.process;
 
-import com.interacciones.mxcashmarketdata.driver.manager.CommandManager;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +26,6 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.interacciones.mxcashmarketdata.driver.command.Retransmission;
 import com.interacciones.mxcashmarketdata.driver.model.MessageRetransmission;
 import com.interacciones.mxcashmarketdata.driver.process.impl.FileMessageProcessing;
 import com.interacciones.mxcashmarketdata.driver.process.impl.QueueMessageProcessing;
@@ -58,25 +55,15 @@ public class DriverServerHandler extends IoHandlerAdapter {
     private static int MSG_LENGTH 	  = 250;
     private static int MSG_SEQUENCE   = 243;
     
-    private CommandManager commandManager = null;
     //private MessageProcessing messageProcessing = new FileMessageProcessing();
     private MessageProcessing messageProcessing = new QueueMessageProcessing();
     
-    public DriverServerHandler(CommandManager commandManager) {
-    	//Command Manager
-		this.commandManager = commandManager;
+    public DriverServerHandler() {
 		//Singleton
 		countSequence = CountSequence.getInstance();
 		
 		messageProcessing.init();
-		
-   	 	/**
-         * Creation Command
-         */
-        //Add command Retransmission
-		Retransmission retrans = new Retransmission();
-		retrans.setCountSequence(countSequence);
-		this.commandManager.addCommand(retrans);
+
 	}
     
     @Override

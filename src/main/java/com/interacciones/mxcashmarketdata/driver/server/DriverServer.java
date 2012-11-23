@@ -19,8 +19,6 @@
 
 package com.interacciones.mxcashmarketdata.driver.server;
 
-import com.interacciones.mxcashmarketdata.driver.manager.CommandManager;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -35,7 +33,6 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 public class DriverServer {
 	protected final static Log LOGGER=LogFactory.getLog(DriverServer.class);
-	private static CommandManager commandManager;
 	private static int PORT = 1626;
 	/**
 	 * @param args
@@ -43,14 +40,13 @@ public class DriverServer {
 	public static void main(String[] args) throws IOException{
 		init(args);
 		IoAcceptor acceptor = new NioSocketAcceptor();
-		
-		commandManager = new CommandManager();
-		
+
+
 		acceptor.getFilterChain().addLast( "logger", new LoggingFilter() );
         //acceptor.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName( "UTF-8" ))));
 
-        acceptor.setHandler(  new DriverServerHandler(commandManager) );
-        
+        acceptor.setHandler(  new DriverServerHandler() );
+
         acceptor.getSessionConfig().setReadBufferSize( 65536 );
         acceptor.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, 10 );
         acceptor.bind( new InetSocketAddress(PORT) );

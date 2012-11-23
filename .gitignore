@@ -9,3 +9,9 @@
 # Other files that shouldn't be part of a repository
 *.tgz
 
+# Don't allow IntelliJ to polute the source tree
+.idea/
+*.iml
+
+# Maven directories for target / building are excluded
+target/

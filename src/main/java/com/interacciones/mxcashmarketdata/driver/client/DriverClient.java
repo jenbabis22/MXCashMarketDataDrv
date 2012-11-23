@@ -25,8 +25,6 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 
-import com.interacciones.mxcashmarketdata.driver.process.DriverServerHandler;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.mina.core.RuntimeIoException;
@@ -50,6 +48,7 @@ public class DriverClient extends IoHandlerAdapter {
 
 	public static void main(String[] args) throws Throwable {
 	    NioSocketConnector connector = new NioSocketConnector();
+        // TODO: Eliminate forced path.
 	    String fileTest = "../test/Prueba.log";
 
 	    // Configure the service.
