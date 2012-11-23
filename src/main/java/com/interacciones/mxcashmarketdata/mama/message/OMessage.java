@@ -1,5 +1,5 @@
 // $Id$
-// MXCashOpenMamaDrv - An OpenMama based driver for the Mexican Cash Market Binary Feed
+// MXCashMarketDataDrv - An OpenMama based driver for the Mexican Cash Market Binary Feed
 // Copyright (c) 2012 Interacciones Casa de Bolsa
 /* 
   This library is free software; you can redistribute it and/or
