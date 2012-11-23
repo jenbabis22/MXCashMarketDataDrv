@@ -19,11 +19,7 @@
 
 package com.interacciones.mxcashmarketdata.driver.server;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-
 import com.interacciones.mxcashmarketdata.driver.process.DriverServerHandler;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.mina.core.service.IoAcceptor;
@@ -31,36 +27,40 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
 public class DriverServer {
-	protected final static Log LOGGER=LogFactory.getLog(DriverServer.class);
-	private static int PORT = 1626;
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) throws IOException{
-		init(args);
-		IoAcceptor acceptor = new NioSocketAcceptor();
+    protected final static Log LOGGER = LogFactory.getLog(DriverServer.class);
+    private static int PORT = 1626;
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) throws IOException {
+        init(args);
+        IoAcceptor acceptor = new NioSocketAcceptor();
 
 
-		acceptor.getFilterChain().addLast( "logger", new LoggingFilter() );
+        acceptor.getFilterChain().addLast("logger", new LoggingFilter());
         //acceptor.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName( "UTF-8" ))));
 
-        acceptor.setHandler(  new DriverServerHandler() );
+        acceptor.setHandler(new DriverServerHandler());
 
-        acceptor.getSessionConfig().setReadBufferSize( 65536 );
-        acceptor.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, 10 );
-        acceptor.bind( new InetSocketAddress(PORT) );
+        acceptor.getSessionConfig().setReadBufferSize(65536);
+        acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
+        acceptor.bind(new InetSocketAddress(PORT));
         LOGGER.info("Mina Server Socket Initiated");
-	}
-	
-	private static void init(String[] args){
-		if(args.length <= 0){
-			LOGGER.info("No se setearon parametros, Tomando valores por default para MinaSocket");
-		}else {
-			if(args[0].equalsIgnoreCase("-port_mina")){
-				PORT = Integer.parseInt(args[1]);
-			}
-		}
-	}
+    }
+
+    private static void init(String[] args) {
+        if (args.length <= 0) {
+            LOGGER.info("No parameters set. Taking default values for MinaSocket");
+        } else {
+            if (args[0].equalsIgnoreCase("-port_mina")) {
+                PORT = Integer.parseInt(args[1]);
+            }
+        }
+    }
 }
 

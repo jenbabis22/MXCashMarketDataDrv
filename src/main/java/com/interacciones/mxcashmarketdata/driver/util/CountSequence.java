@@ -22,35 +22,35 @@ package com.interacciones.mxcashmarketdata.driver.util;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class CountSequence {
-	
-	protected CountSequence() {
-		sequence = new AtomicLong(2);
-	}
-	
-	static private CountSequence instance;
 
-	private AtomicLong sequence;
-	
-	/**
-	 * @return sequence and increment
-	 */
-	public long next(){
-		return sequence.getAndIncrement();
-	}
-	
-	public void setValue(long count){
-		sequence.getAndSet(count);
-	}
-	
-	public long getValue(){
-		return sequence.get();
-	}
-	
-	static public CountSequence getInstance(){
-		if(instance==null){
-			instance = new CountSequence();
-		}
-		return instance;
-	}
+    protected CountSequence() {
+        sequence = new AtomicLong(2);
+    }
+
+    static private CountSequence instance;
+
+    private AtomicLong sequence;
+
+    /**
+     * @return sequence and increment
+     */
+    public long next() {
+        return sequence.getAndIncrement();
+    }
+
+    public void setValue(long count) {
+        sequence.getAndSet(count);
+    }
+
+    public long getValue() {
+        return sequence.get();
+    }
+
+    static public CountSequence getInstance() {
+        if (instance == null) {
+            instance = new CountSequence();
+        }
+        return instance;
+    }
 }
 

@@ -19,48 +19,47 @@
 
 package com.interacciones.mxcashmarketdata.mama.queue;
 
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
+import com.interacciones.mxcashmarketdata.mama.message.Parser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.interacciones.mxcashmarketdata.mama.message.Parser;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class QueueReader {
-	protected final static Log LOGGER=LogFactory.getLog(QueueReader.class);
-	SendMessageToMama sendMessage = null;
-	
-	public QueueReader() {
-		sendMessage = new SendMessageToMama();
-	}
+    protected final static Log LOGGER = LogFactory.getLog(QueueReader.class);
+    SendMessageToMama sendMessage = null;
 
-	public void ReadQueue(ConcurrentLinkedQueue<Parser> msgQueue){
-		
-		LOGGER.debug("Reading from queue... Sizing " + msgQueue.size());
-        
-		while (true){
-			Iterator<Parser> it=msgQueue.iterator();
-			
-			while(it.hasNext()){
-				Parser msg = (Parser)it.next();
-				LOGGER.debug("Tipo de Mensaje: " + msg.TypeMessage());
-				LOGGER.debug("Emisora :"+ msg.Emisora()); 
-				sendMessage.sendMessage(msg);
-				msgQueue.poll();
-			}
-			
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				LOGGER.error("Error: " + e.getMessage());
-			}
-		}
-	}
-	
-	public void close(){
-		//TODO
-	}
+    public QueueReader() {
+        sendMessage = new SendMessageToMama();
+    }
+
+    public void ReadQueue(ConcurrentLinkedQueue<Parser> msgQueue) {
+
+        LOGGER.debug("Reading from queue... Sizing " + msgQueue.size());
+
+        while (true) {
+            Iterator<Parser> it = msgQueue.iterator();
+
+            while (it.hasNext()) {
+                Parser msg = (Parser) it.next();
+                LOGGER.debug("Message Type: " + msg.TypeMessage());
+                LOGGER.debug("Symbol (Emisora):" + msg.Emisora());
+                sendMessage.sendMessage(msg);
+                msgQueue.poll();
+            }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                LOGGER.error("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    public void close() {
+        //TODO
+    }
 }
 

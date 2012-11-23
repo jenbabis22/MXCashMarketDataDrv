@@ -19,66 +19,67 @@
 
 package com.interacciones.mxcashmarketdata.driver.process.impl;
 
+import com.interacciones.mxcashmarketdata.driver.process.MessageProcessing;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.interacciones.mxcashmarketdata.driver.process.MessageProcessing;
-
 //This class recieves messages and writes them to a log file.
 public class FileMessageProcessing implements MessageProcessing {
-	protected final static Log LOGGER=LogFactory.getLog(FileMessageProcessing.class);
-	/**
-	 * Down to file
-	 */
-	private static File file = null;
-	private static FileWriter is = null;
-	private static BufferedWriter bf = null;
-	
-	public FileMessageProcessing() {
-		try {
-			file = new File("ProcessingFilter.log");
-			is = new FileWriter(file,true);
-			bf = new BufferedWriter(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void receiv(String message) {
-		try {
-			bf.write(message+"\n");
-			bf.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void close(){
-		try {
-			bf.close();
-			is.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			LOGGER.error(e.getMessage());
-		}
-	}
+    protected final static Log LOGGER = LogFactory.getLog(FileMessageProcessing.class);
+    /**
+     * Down to file
+     */
+    private static File file = null;
+    private static FileWriter is = null;
+    private static BufferedWriter bf = null;
 
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	protected void finalize() throws Throwable {
-		bf.close();
-		is.close();
-	};
+    public FileMessageProcessing() {
+        try {
+            file = new File("ProcessingFilter.log");
+            is = new FileWriter(file, true);
+            bf = new BufferedWriter(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receive(String message) {
+        try {
+            bf.write(message + "\n");
+            bf.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void close() {
+        try {
+            bf.close();
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public void init() {
+        // TODO Auto-generated method stub
+
+    }
+
+    protected void finalize() throws Throwable {
+        bf.close();
+        is.close();
+    }
+
+    ;
 }
 

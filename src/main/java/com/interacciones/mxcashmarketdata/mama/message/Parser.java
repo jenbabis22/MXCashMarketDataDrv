@@ -20,46 +20,46 @@
 package com.interacciones.mxcashmarketdata.mama.message;
 
 public class Parser {
-	private String Message;
-	
-	public Parser(String message){
-		this.Message = message;
-	}
-	
-	public String TypeMessage(){
-		return Message.substring(0, 2);
-	}
-	
-	public String TypeValue(){
-		return "";
-	}
-	
-	public String Emisora(){
-		return "";
-	}
-		
-	public String Serie(){
-		return "";
-	}
-	
-	public double AskPrice(){
-		return 0;
-	}
-	
-	public long AskSize(){
-		return 0;
-	}
-	
-	public long BidSize(){
-		return 0;
-	}
-	
-	public double BidPrice(){
-		return 0;
-	}
-	
-	public String QuoteTime(){
-		return "";
-	}
+    private String Message;
+
+    public Parser(String message) {
+        this.Message = message;
+    }
+
+    public String TypeMessage() {
+        return Message.substring(0, 2);
+    }
+
+    public String TypeValue() {
+        return "";
+    }
+
+    public String Emisora() {
+        return "";
+    }
+
+    public String Serie() {
+        return "";
+    }
+
+    public double AskPrice() {
+        return 0;
+    }
+
+    public long AskSize() {
+        return 0;
+    }
+
+    public long BidSize() {
+        return 0;
+    }
+
+    public double BidPrice() {
+        return 0;
+    }
+
+    public String QuoteTime() {
+        return "";
+    }
 }
 

@@ -19,63 +19,63 @@
 
 package com.interacciones.mxcashmarketdata.mama.util;
 
-import java.util.HashMap;
-
 import com.wombat.mama.MamaPublisher;
 import com.wombat.mama.MamaTransport;
 
+import java.util.HashMap;
+
 public class ListPublisher {
-	static private ListPublisher instance;
-	private HashMap<String , MamaPublisher> mapPublisher = null;
-	private MamaTransport transport = null;
-	
-	private ListPublisher() {
-		mapPublisher = new HashMap<String , MamaPublisher>();
-	}
-	
-	static public ListPublisher getInstance(){
-		if(instance==null){
-			instance = new ListPublisher();
-		}
-		return instance;
-	}
-	
-	public void set(String topic){
-		MamaPublisher publisher = new MamaPublisher();
-		publisher.create(getTransport(), topic);
-		mapPublisher.put(topic, publisher);
-	}
-	
-	public MamaPublisher get(String topic){
-		MamaPublisher publisher = (MamaPublisher)mapPublisher.get(topic); 
-		if(publisher==null){
-			//set(topic);
-			publisher = new MamaPublisher();
-			publisher.create(getTransport(), topic);
-			mapPublisher.put(topic, publisher);
-		}
-		return publisher;
-	}
-	
-	public void clear(){
-		mapPublisher.clear();
-	}
-	
-	public HashMap<String, MamaPublisher> getAll(){
-		return mapPublisher;
-	}
+    static private ListPublisher instance;
+    private HashMap<String, MamaPublisher> mapPublisher = null;
+    private MamaTransport transport = null;
 
-	@Override
-	public String toString() {
-		return "ListPublisher [mapPublisher=" + mapPublisher + "]";
-	}
+    private ListPublisher() {
+        mapPublisher = new HashMap<String, MamaPublisher>();
+    }
 
-	public MamaTransport getTransport() {
-		return transport;
-	}
+    static public ListPublisher getInstance() {
+        if (instance == null) {
+            instance = new ListPublisher();
+        }
+        return instance;
+    }
 
-	public void setTransport(MamaTransport transport) {
-		this.transport = transport;
-	}
+    public void set(String topic) {
+        MamaPublisher publisher = new MamaPublisher();
+        publisher.create(getTransport(), topic);
+        mapPublisher.put(topic, publisher);
+    }
+
+    public MamaPublisher get(String topic) {
+        MamaPublisher publisher = (MamaPublisher) mapPublisher.get(topic);
+        if (publisher == null) {
+            //set(topic);
+            publisher = new MamaPublisher();
+            publisher.create(getTransport(), topic);
+            mapPublisher.put(topic, publisher);
+        }
+        return publisher;
+    }
+
+    public void clear() {
+        mapPublisher.clear();
+    }
+
+    public HashMap<String, MamaPublisher> getAll() {
+        return mapPublisher;
+    }
+
+    @Override
+    public String toString() {
+        return "ListPublisher [mapPublisher=" + mapPublisher + "]";
+    }
+
+    public MamaTransport getTransport() {
+        return transport;
+    }
+
+    public void setTransport(MamaTransport transport) {
+        this.transport = transport;
+    }
 }
 

@@ -20,48 +20,48 @@
 package com.interacciones.mxcashmarketdata.mama.message;
 
 public class PMessage extends Parser {
-	private String Message;
-	
-	public PMessage(String message) {
-		super(message);
-		Message = message;
-	}
-	
-	//Methods
-	public String TypeMessage(){
-		return Message.substring(0, 2);
-	}
+    private String Message;
 
-	public String Trans() {//unused
-		return Message.substring(2,3);
-	}
-	
-	public String Folio(){
-		return Message.substring(3,8);
-	}
-	
-	public String Hora(){
-		return Message.substring(8,12);
-	}
+    public PMessage(String message) {
+        super(message);
+        Message = message;
+    }
 
-	public String TypeValue(){	
-		return Message.substring(12, 16);
-        }
-	
-	public String Emisora(){	
-		return Message.substring(16,23);
-        }
+    //Methods
+    public String TypeMessage() {
+        return Message.substring(0, 2);
+    }
 
-	public String Serie(){		
-		return Message.substring(23,28);	
-	}
+    public String Trans() {//unused
+        return Message.substring(2, 3);
+    }
 
-	public String Volumen(){
-		return Message.substring(28, 39);
-	}
-	
-	public String Precio(){
-		return Message.substring(39,45).concat(".").concat(Message.substring(45,51));
-	}
+    public String Folio() {
+        return Message.substring(3, 8);
+    }
+
+    public String Hora() {
+        return Message.substring(8, 12);
+    }
+
+    public String TypeValue() {
+        return Message.substring(12, 16);
+    }
+
+    public String Emisora() {
+        return Message.substring(16, 23);
+    }
+
+    public String Serie() {
+        return Message.substring(23, 28);
+    }
+
+    public String Volumen() {
+        return Message.substring(28, 39);
+    }
+
+    public String Precio() {
+        return Message.substring(39, 45).concat(".").concat(Message.substring(45, 51));
+    }
 }
 

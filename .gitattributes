@@ -1,0 +1,2 @@
+# Make sure java files still have the handy $Id:$ attribute.
+*.java	ident
