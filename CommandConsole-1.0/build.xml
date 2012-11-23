@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<project name="CommandConsole" basedir="." default="usage">
+	<property environment="env"/>
+	<echo message="${env.FIXFLYER_HOME}"/>
+	
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="bin"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="fix.root" value="${env.FIXFLYER_HOME}"/>
+	<property name="version.num" value="1.0"/>
+
+	<tstamp>
+		<format property="today" pattern="yyyy-MM-dd HH:mm:ss"/>
+	</tstamp>
+	
+	<path id="compile-classpath">
+		<fileset dir="${fix.root}/lib/">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="usage">
+		<echo message="build    --> Compile sample source files to ${build.dir}"/>
+		<echo message="clean    --> Remove ${build.dir}"/>
+		<echo message=""/>
+	</target>
+
+	<target name="clean" description="Clean output dirs (build)">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<target name="build" description="Compile main source tree java files into class files, generate jar files">
+
+		<mkdir dir="${build.dir}"/>
+		<!--copy file="src/params.properties" tofile=".classes/params.properties"/>
+		<copy file="src/loadSecurityList.properties" tofile=".classes/loadSecurityList.properties"/-->
+
+		<javac destdir="${build.dir}" source="1.5" target="1.5" debug="true"
+				deprecation="false" optimize="false" failonerror="true">
+			<src path="${src.dir}"/>
+			<classpath refid="compile-classpath"/>
+		</javac>
+	</target>
+
+	<target name="dist" description="Create Dist jar" depends="build">
+			
+			<mkdir dir="${dist.dir}"/>
+					<!--copy file="src/params.properties" tofile=".classes/params.properties"/>
+					<copy file="src/loadSecurityList.properties" tofile=".classes/loadSecurityList.properties"/-->
+
+			<jar destfile="${dist.dir}/command-console.jar">
+					<fileset dir="${build.dir}"/>
+
+					<manifest>
+						<attribute name="Author" value="Pepinillo Surfer"/>
+						<!-- Agrega el directorio local al classpath -->
+						<section name="Info">
+							<attribute name="Title" value="CommandConsole"/>
+							<attribute name="Version" value="${version.num}"/>
+							<attribute name="Date" value="${today}"/>
+						</section>
+					</manifest>
+
+			</jar>
+		
+	</target>
+	
+</project>

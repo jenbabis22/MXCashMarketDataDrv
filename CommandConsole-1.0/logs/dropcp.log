@@ -1,0 +1,40 @@
+2012-01-11 11:20:21,124 INFO  [commandLine] client.ConsoleRm - top
+2012-01-11 11:20:21,128 INFO  [commandLine] client.ConsoleRm - No existe el comando, teclea usage para los comandos disponibles
+2012-01-11 11:20:25,659 INFO  [commandLine] client.ConsoleRm - usage
+2012-01-11 11:20:25,695 INFO  [commandLine] client.ConsoleRm - Resultado: stop|Parando Proceso Fake|@usage|Muestra los Comandos Disponibles|@recovery|Recuperacion en caso de un failover|@
+2012-01-11 11:20:34,679 INFO  [commandLine] client.ConsoleRm - recovery
+2012-01-11 11:20:34,729 INFO  [commandLine] client.ConsoleRm - Resultado: Ejecucion del comando recovery
+2012-01-11 11:20:42,271 INFO  [commandLine] client.ConsoleRm - recover
+2012-01-11 11:20:42,272 INFO  [commandLine] client.ConsoleRm - No existe el comando, teclea usage para los comandos disponibles
+2012-01-11 11:20:46,531 INFO  [commandLine] client.ConsoleRm - recovery
+2012-01-11 11:20:46,643 INFO  [commandLine] client.ConsoleRm - Resultado: |recovery | recovery {file}|
+2012-01-11 11:20:52,447 INFO  [commandLine] client.ConsoleRm - stop
+2012-01-11 11:20:52,516 INFO  [commandLine] client.ConsoleRm - Resultado: Ejecucion del comando stop Fake
+2012-01-11 11:20:56,011 INFO  [commandLine] client.ConsoleRm - stop
+2012-01-11 11:20:56,170 INFO  [commandLine] client.ConsoleRm - Resultado: |stop | stop {procread } default all|
+2012-01-11 11:21:00,471 INFO  [commandLine] client.ConsoleRm - stope
+2012-01-11 11:21:00,472 INFO  [commandLine] client.ConsoleRm - No existe el comando, teclea usage para los comandos disponibles
+2012-01-11 11:21:03,019 INFO  [commandLine] client.ConsoleRm - usage
+2012-01-11 11:21:03,061 INFO  [commandLine] client.ConsoleRm - Resultado: stop|Parando Proceso Fake|@usage|Muestra los Comandos Disponibles|@recovery|Recuperacion en caso de un failover|@
+2012-01-11 11:31:25,964 INFO  [commandLine] client.ConsoleRm - recovery
+2012-01-11 11:31:25,976 INFO  [commandLine] client.ConsoleRm - Resultado: Ejecucion del comando recovery
+2012-01-11 11:36:37,975 INFO  [commandLine] client.ConsoleRm - usageexit
+2012-01-11 11:36:37,976 INFO  [commandLine] client.ConsoleRm - No existe el comando, teclea usage para los comandos disponibles
+2012-01-11 13:36:56,060 INFO  [commandLine] client.ConsoleRm - usageexit
+2012-01-11 13:36:56,064 INFO  [commandLine] client.ConsoleRm - No existe el comando, teclea usage para los comandos disponibles
+2012-01-11 13:37:01,167 INFO  [commandLine] client.ConsoleRm - usage
+2012-01-11 13:37:01,185 INFO  [commandLine] client.ConsoleRm - Resultado: stop|Parando Proceso Fake|@usage|Muestra los Comandos Disponibles|@recovery|Recuperacion en caso de un failover|@
+2012-01-11 13:37:53,295 INFO  [commandLine] client.ConsoleRm - recovery
+2012-01-11 13:37:53,304 INFO  [commandLine] client.ConsoleRm - Resultado: Ejecucion del comando recovery
+2012-01-11 13:37:57,091 INFO  [commandLine] client.ConsoleRm - stop
+2012-01-11 13:37:57,102 INFO  [commandLine] client.ConsoleRm - Resultado: |stop | stop {procread } default all|
+2012-01-11 13:49:26,596 INFO  [commandLine] client.ConsoleRm - stop
+2012-01-11 13:49:26,608 INFO  [commandLine] client.ConsoleRm - Resultado: |stop | stop {procread } default all|
+2012-01-11 13:49:32,403 INFO  [commandLine] client.ConsoleRm - usageexit
+2012-01-11 13:49:32,405 INFO  [commandLine] client.ConsoleRm - No existe el comando, teclea usage para los comandos disponibles
+2012-01-11 13:49:36,503 INFO  [commandLine] client.ConsoleRm - usage
+2012-01-11 13:49:36,512 INFO  [commandLine] client.ConsoleRm - Resultado: stop|Parando Proceso Fake|@usage|Muestra los Comandos Disponibles|@recovery|Recuperacion en caso de un failover|@
+2012-01-11 13:49:48,383 INFO  [commandLine] client.ConsoleRm - stop
+2012-01-11 13:49:48,393 INFO  [commandLine] client.ConsoleRm - Resultado: Ejecucion del comando stop Fake
+2012-01-11 13:49:53,843 INFO  [commandLine] client.ConsoleRm - stop
+2012-01-11 13:49:53,852 INFO  [commandLine] client.ConsoleRm - Resultado: |stop | stop {procread } default all|
