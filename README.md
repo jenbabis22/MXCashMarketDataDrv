@@ -24,7 +24,7 @@ What about the Mexican Cash Market
 
 The Mexican Cash Market is also know as BMV Capitales. BMV stands for Bolsa Mexicana de Valores (Mexican Stock Exchange). This driver will initially handle the market data distribute through the 'Setrib Tradicional' interface, and if needed will handle the market data distributed throughout the FIX interface as well.
 
-BMV, Setrib Tradicional and all other trademarks remain the property of their respective owners. 
+BMV, Setrib Tradicional, OpenMama and all other trademarks remain the property of their respective owners. 
 
 Why OpenMama
 
