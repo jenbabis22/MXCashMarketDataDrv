@@ -1,0 +1,13 @@
+November 27th
+
+DONE
+Maven compilation works correctly (see Install for details) but running it is still a bit complex. 
+
+TODO
+
+Provide file-translation mode where a binary file is read and then written in some comprehensible format.
+
+Translate other messages, such as those related to the book.
+
+Define how to interact with the driver, whether through a command-line or maybe with other styles of commands.
+

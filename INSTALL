@@ -1,0 +1,9 @@
+Right now Maven compilation works fine but only if you either do A or B:
+ A. Reference the DropBox code repository.
+ B. Add the open-mama dependencies manually to your local repository, i.e. if you have the binaries expanded, run the following command:
+
+mvn install:install-file -Dpackaging=jar -Dfile=<path to mamajni.jar> -DgroupId=com.wombat.mama     -DartifactId=open-mama -Dversion=2.2.1.1
+
+To execute the driver
+
+mvn exec:java -Dexec.mainClass="com.interacciones.mxcashmarketdata.driver.server.DriverServer"
