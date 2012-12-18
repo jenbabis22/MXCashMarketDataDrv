@@ -66,7 +66,8 @@ public class SendMessageToMama {
     }
 
     public void sendMessage(Parser message) {
-        if (message.TypeMessage().equals("O") || message.TypeMessage().equals("DO")) {
+	String typeMessage = message.TypeMessage().trim();
+        if (typeMessage.equals("O") || typeMessage.equals("DO")) {
             msgO_OD(message);
         } else {
             //TODO
