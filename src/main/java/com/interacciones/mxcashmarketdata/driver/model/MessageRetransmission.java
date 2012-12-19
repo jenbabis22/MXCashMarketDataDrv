@@ -55,6 +55,7 @@ public class MessageRetransmission {
     private static String CONTENT = "000000";
     private static String LENGTH = "000";
     private static byte[] DATA;
+    private String message;
 
     /**
      * *BINARY***
@@ -70,6 +71,30 @@ public class MessageRetransmission {
 
     }
 
+    /**
+     * Binary format
+     */
+    private void getHeaderBinary(){
+    /**Armando el header**/
+        messageBuffer.position(0);
+	messageBuffer.put((byte)SOH)
+		     .put((byte)DC4)
+		     .put((byte)_128)
+		     .put((byte)BYTE_NULL)
+		     .put(fillerByte((byte)BYTE_NULL, FILLER_BYTE_LENGTH));
+    }
+	
+    private void getBodyBinary(){
+        messageBuffer.put(message.getBytes())
+		     .put((byte)RC)
+		     .put((byte)ZERO)
+		     .put((byte)_172)
+		     .put((byte)EOT);
+    }
+
+    /**
+     * Message Retransmission
+     */
     private void getHeader() {
         /**Building the header**/
         messageBuffer.position(0);
@@ -81,6 +106,9 @@ public class MessageRetransmission {
                 .put(fillerString("0", FILLER_BYTE_LENGTH));
     }
 
+    /**
+     * Message Retransmission
+     */
     private void getBody() {
         messageBuffer.put(getSequencelong().getBytes())
                 .put(TIME.getBytes())
@@ -98,6 +126,18 @@ public class MessageRetransmission {
                 .put((byte) EOT);
     }
 
+    /**
+     * Binary format
+     */
+    public void MsgConstructBinary(){
+        getHeaderBinary();
+	getBodyBinary();
+	toString();
+    }
+
+    /**
+     * Message Retransmission
+     */
     public void MsgConstruct() {
         getHeader();
         getBody();
@@ -131,20 +171,23 @@ public class MessageRetransmission {
     }
 
     public static String fillerStringRigth(String value, String filling, int length) {
-        StringBuffer tmp;
-        int start = 0;
-        if (value != null) {
-            tmp = new StringBuffer();
-            for (int i = start; i < (length - value.length()); i++)
-                tmp.append(filling);
-
-        } else {
-            tmp = new StringBuffer();
-            start = 0;
-        }
+        StringBuffer tmp = filler(value, filling, length);
 
         tmp.append(value);
 
+        return tmp.toString();
+    }
+
+    public String fillerStringRigth(String value, String filling, int length, boolean rigth) {
+        StringBuffer tmp = filler(value, filling, length);
+        
+        if(rigth){
+            tmp.append(value);
+        }else{
+            String strTmp = tmp.toString();
+            tmp = new StringBuffer(value.concat(strTmp));
+        }
+        
         return tmp.toString();
     }
 
@@ -174,6 +217,22 @@ public class MessageRetransmission {
         return byteArray;
     }
 
+    private StringBuffer filler(String value, String filling, int length) {
+        StringBuffer tmp;
+        int start=0;
+        if (value != null) {
+            tmp = new StringBuffer();
+            for (int i = start; i < (length-value.length()); i++)
+                tmp.append(filling);
+            
+        } else {
+            tmp = new StringBuffer();
+            start = 0;
+        }
+        
+        return tmp;
+    }
+
     @Override
     public String toString() {
         return "MessageRetransmission [getByte()=" + Arrays.toString(getByte())
@@ -186,6 +245,14 @@ public class MessageRetransmission {
 
     public static void setSequencelong(long sequencelong) {
         MessageRetransmission.sequencelong = sequencelong;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
 
