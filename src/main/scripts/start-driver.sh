@@ -14,6 +14,4 @@
 
 export JAVA_OPTS=" -Xms512m -Xmx1024m -XX:MaxPermSize=512m "
 
-CLASSPATH=../.classes/:../lib/*
-
-java -jar mx-cash-marketdata-driver
+java -jar ../mx-cash-marketdata-driver.jar -port_mina 1656

@@ -194,11 +194,18 @@ reported bug on maven that affects exactly those libraries -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.2.2</version>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/assembly.xml</descriptor>
-                    </descriptors>
-                </configuration>
+                <executions>
+                      <execution>
+                      	   <id>make-src-assembly</id> <!-- this is used for inheritance merges -->
+                      	   <phase>package</phase> <!-- bind to the packaging phase -->
+                      	   <goals>
+                               <goal>single</goal>
+                      	   </goals>
+                           <configuration>
+                               <descriptor>src/main/assembly/assembly.xml</descriptor>
+                           </configuration>
+                      </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

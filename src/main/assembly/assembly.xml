@@ -2,7 +2,7 @@
     <id>bin</id>
     <!-- Generates a zip package containing the needed files -->
     <formats>
-        <format>zip</format>
+        <format>tar</format>
     </formats>
 
     <!-- Adds dependencies to zip package under lib directory -->
@@ -26,15 +26,18 @@
        -->
         <fileSet>
             <directory>${project.build.scriptSourceDirectory}</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/bin</outputDirectory>
+	    <lineEnding>unix</lineEnding>  
+            <fileMode>0755</fileMode>
             <includes>
-                <include>startup.*</include>
+                <include>**/*.sh</include>
             </includes>
         </fileSet>
         <!-- adds jar package to the root directory of zip package -->
         <fileSet>
             <directory>${project.build.directory}</directory>
             <outputDirectory></outputDirectory>
+            <fileMode>0644</fileMode>
             <includes>
                 <include>*.jar</include>
             </includes>
