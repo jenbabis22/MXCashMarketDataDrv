@@ -28,6 +28,8 @@ import com.interacciones.mxcashmarketdata.mama.message.OMessage;
 import com.interacciones.mxcashmarketdata.mama.message.PMessage;
 import com.interacciones.mxcashmarketdata.mama.message.Parser;
 import com.interacciones.mxcashmarketdata.mama.queue.QueueReader;
+import com.interacciones.mxcashmarketdata.driver.queue.QueueWriteFile;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,16 +39,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class QueueMessageProcessing implements MessageProcessing {
     protected final static Log LOGGER = LogFactory.getLog(DriverServerHandler.class);
     private Thread queue = null;
+    private Thread queueFile = null;
     private static int MSG_TYPE = 28;
     private static String MSG_O = "O";
     private static String MSG_DO = "DO";
     private static String MSG_P = "P";
     private static String MSG_K = "K";
     /**
-     * Queue
+     * Queue OpenMama
      */
     private QueueReader QueueReader;
     private ConcurrentLinkedQueue<Parser> MsgQueue;
+
+    /**
+     * Queue File
+     */
+    private QueueWriteFile queueWrite;
+    private ConcurrentLinkedQueue<String> msgQueueFile;
 
     public QueueMessageProcessing() {
         /**
@@ -55,10 +64,21 @@ public class QueueMessageProcessing implements MessageProcessing {
          */
         MsgQueue = new ConcurrentLinkedQueue<Parser>();
         QueueReader = new QueueReader();
+
+	queueWrite = new QueueWriteFile();
+        msgQueueFile = new ConcurrentLinkedQueue<String>();
     }
 
     @Override
     public void receive(String message) {
+	/**
+    	 * message in file
+    	 */
+    	msgQueueFile.add(message);
+    	
+    	/**
+    	 * message in OpenMama
+    	 */
         String typeMessage = message.substring(MSG_TYPE, MSG_TYPE + 2).trim();
         LOGGER.debug("Type Message: " + typeMessage);
 
@@ -83,12 +103,16 @@ public class QueueMessageProcessing implements MessageProcessing {
     @Override
     public void close() {
         MsgQueue.clear();
+	msgQueueFile.clear();
     }
 
     @Override
     public void init() {
         queue = new Thread(this.ReadFromQueue);
         queue.start();
+
+	queueFile = new Thread(ReadFromQueueWrite);
+        queueFile.start();
     }
 
     //Parse Data
@@ -96,6 +120,15 @@ public class QueueMessageProcessing implements MessageProcessing {
         public void run() {
             QueueReader.ReadQueue(MsgQueue);
         }
+    };
+
+    Runnable ReadFromQueueWrite = new Runnable() {
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		queueWrite.ReadQueue(msgQueueFile);
+	}
     };
 }
 

@@ -27,6 +27,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 //This class recieves messages and writes them to a log file.
 public class FileMessageProcessing implements MessageProcessing {
@@ -38,11 +40,14 @@ public class FileMessageProcessing implements MessageProcessing {
     private static FileWriter is = null;
     private static BufferedWriter bf = null;
 
+    private static SimpleDateFormat formato = null;
+
     public FileMessageProcessing() {
         try {
             file = new File("ProcessingFilter.log");
             is = new FileWriter(file, true);
             bf = new BufferedWriter(is);
+	    formato = new SimpleDateFormat("H:mm:ss.SSS");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,7 +56,9 @@ public class FileMessageProcessing implements MessageProcessing {
     @Override
     public void receive(String message) {
         try {
-            bf.write(message + "\n");
+            bf.write(message.concat("-".concat(formato.format(new Date()))));
+            bf.write(13);
+            bf.write(10);
             bf.flush();
         } catch (IOException e) {
             e.printStackTrace();

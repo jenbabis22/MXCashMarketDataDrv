@@ -21,12 +21,13 @@
 package com.interacciones.mxcashmarketdata.driver.util;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+
 
 import com.interacciones.mxcashmarketdata.driver.model.MessageRetransmission;
 
@@ -42,10 +43,9 @@ public class AppropriateFormat {
 	private static FileInputStream is = null;
 	private static InputStreamReader isr = null;
 	private static BufferedReader br = null;
-	
-	private static File filewrite = null;
-	private static FileWriter fw = null;
-	private static BufferedWriter bf = null;
+
+	private static FileOutputStream fos = null;
+	private static ObjectOutputStream oos = null;
 	
 	private static String source = "30122010.txt";
 	private static String destination = "converterBinary";
@@ -63,10 +63,9 @@ public class AppropriateFormat {
 	            isr = new InputStreamReader(is);
 		 	    br = new BufferedReader(isr);
 		 	    //write
-		 	    filewrite = new File(destination);
-				fw = new FileWriter(filewrite,true);
-				bf = new BufferedWriter(fw);
-		 	    
+			    fos = new FileOutputStream(destination);
+				oos = new ObjectOutputStream(fos);
+
 		 	    int data = 0;
 			    int count = 0;
 			    
@@ -110,11 +109,7 @@ public class AppropriateFormat {
 	}
 	
 	private static void writeToFile(byte[] message) throws IOException {
-		for (int i = 0; i < message.length; i++) {
-			byte b = message[i];
-			bf.write((int)b);
-		}
-		bf.flush();
+		oos.write(message);
 	}
 	
 	private static void init(String[] args){
@@ -139,8 +134,9 @@ public class AppropriateFormat {
 	
 	private static void close() throws IOException{
 		//write
-		bf.close();
-		fw.close();
+		oos.flush();
+		oos.close();
+		fos.close();
 		
 		//read
 		br.close();
