@@ -193,7 +193,7 @@ reported bug on maven that affects exactly those libraries -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2.2</version>
+                <version>2.4</version>
                 <executions>
                       <execution>
                       	   <id>make-src-assembly</id> <!-- this is used for inheritance merges -->
