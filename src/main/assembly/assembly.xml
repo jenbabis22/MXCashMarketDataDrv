@@ -42,5 +42,13 @@
                 <include>*.jar</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>src/main/config</directory>
+            <outputDirectory>/config</outputDirectory>
+            <fileMode>0644</fileMode>
+            <includes>
+                <include>*.properties</include>
+            </includes>
+        </fileSet>
     </fileSets>
 </assembly>
