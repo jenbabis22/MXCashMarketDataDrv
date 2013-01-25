@@ -24,19 +24,18 @@
         <name>Interacciones Casa de Bolsa, S.A. de C.V. Grupo Financiero Interacciones</name>
         <url>http://www.interacciones.com/</url>
     </organization>
-    <distributionManagement>
+    <!--distributionManagement>
         <repository>
             <id>dropbox</id>
-            <url>file:///mnt/hgfs/carlos/Dropbox/Public/mvn-repository</url>
+            <url>http://my-repository-maven.googlecode.com/svn</url>
         </repository>
     </distributionManagement>
     <repositories>
         <repository>
             <id>dropbox</id>
-            <!--<url>https://www.dropbox.com/home/mvn-repository</url>-->
-            <url>file:///mnt/hgfs/carlos/Dropbox/Public/mvn-repository</url>
+            <url>http://my-repository-maven.googlecode.com/svn</url>
         </repository>
-    </repositories>
+    </repositories-->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -50,9 +49,9 @@
             <version>2.2.1.1</version>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.9</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>xmlrpc</groupId>
