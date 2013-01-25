@@ -110,6 +110,7 @@ public class AppropriateFormat {
 	
 	private static void writeToFile(byte[] message) throws IOException {
 		oos.write(message);
+		oos.flush();
 	}
 	
 	private static void init(String[] args){

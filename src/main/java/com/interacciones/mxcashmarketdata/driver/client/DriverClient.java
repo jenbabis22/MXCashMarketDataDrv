@@ -18,7 +18,7 @@
 */
 
 package com.interacciones.mxcashmarketdata.driver.client;
-
+ 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.mina.core.RuntimeIoException;
@@ -43,14 +43,16 @@ public class DriverClient extends IoHandlerAdapter {
     protected final static Log LOGGER = LogFactory.getLog(DriverClient.class);
     private static final long CONNECT_TIMEOUT = 1000L;
     private static final boolean USE_CUSTOM_CODEC = false;
-    private static final int PORT = 1626;
-    private static final String HOST = "localhost";
+    // Parameters default port, host, fileTest
+    private static int port = 1626;
+    private static String host = "localhost";
+    private static String fileTest = "Prueba.log";
 
     public static void main(String[] args) throws Throwable {
+    	init(args);
+    	
         NioSocketConnector connector = new NioSocketConnector();
-        // TODO: Eliminate forced path.
-        String fileTest = "../test/Prueba.log";
-
+        
         // Configure the service.
         connector.setConnectTimeoutMillis(CONNECT_TIMEOUT);
         if (USE_CUSTOM_CODEC) {
@@ -68,7 +70,8 @@ public class DriverClient extends IoHandlerAdapter {
         IoSession session;
         for (; ; ) {
             try {
-                ConnectFuture future = connector.connect(new InetSocketAddress(HOST, PORT));
+            	System.out.println(host + " " + port + " " + fileTest);
+                ConnectFuture future = connector.connect(new InetSocketAddress(host, port));
                 future.awaitUninterruptibly();
                 session = future.getSession();
 
@@ -79,22 +82,31 @@ public class DriverClient extends IoHandlerAdapter {
 
                 int data = br.read();
                 int count = 0;
-                byte[] bytes = new byte[274];
-                bytes[count] = (byte) data;
-
-                while (data != -1) {
-                    data = br.read();
-                    count++;
-                    if (data == 13) {
-                        IoBuffer ib = IoBuffer.allocate(bytes.length);
-                        ib.put(bytes);
-                        ib.flip();
-                        session.write(ib);
-                        count = 0;
-                        bytes = new byte[278];
-                    }
-                    bytes[count] = (byte) data;
-                }
+               
+                IoBuffer ib = IoBuffer.allocate(274);
+			    ib.setAutoExpand(true);
+			    boolean flagcount = false;
+			    
+			    while(data != -1){
+			    	data = br.read();
+			    	ib.put((byte)data);
+			    	
+			        if (flagcount){count++;}
+			        if (data==13){
+			            count=1;
+			            flagcount = true;
+				    	LOGGER.debug(ib.toString());
+			        }
+			        if (count == 4) {
+						ib.flip();
+			        	session.write(ib);
+			        	ib = IoBuffer.allocate(274);
+			        	ib.setAutoExpand(true);
+						flagcount = false;
+						count = 0;
+						//Thread.sleep(500);
+					}
+			    }
 
                 break;
             } catch (RuntimeIoException e) {
@@ -109,5 +121,28 @@ public class DriverClient extends IoHandlerAdapter {
         session.getCloseFuture().awaitUninterruptibly();
         connector.dispose();
     }
+    
+    private static void init(String[] args){
+		if(args.length <= 0){
+			LOGGER.info("Default Parameters");
+		}else {
+			for (int i = 0; i < args.length;) {
+				String arg = args[i];
+				
+				if(arg.equals("-src")){
+					fileTest = args[i+1];
+					i+=2;
+				}else if(arg.equals("-host")){
+					host = args[i+1];
+					i+=2;
+				}else if(arg.equals("-port")){
+					port = new Integer(args[i+1]);
+					i+=2;
+				}else{
+					i++;
+				}
+			}
+		}
+	}
 }
 

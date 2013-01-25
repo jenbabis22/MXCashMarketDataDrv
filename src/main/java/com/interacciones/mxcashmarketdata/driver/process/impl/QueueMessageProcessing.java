@@ -74,7 +74,7 @@ public class QueueMessageProcessing implements MessageProcessing {
 	/**
     	 * message in file
     	 */
-    	msgQueueFile.add(message);
+    	msgQueueFile.add(new String(message));
     	
     	/**
     	 * message in OpenMama
@@ -102,8 +102,7 @@ public class QueueMessageProcessing implements MessageProcessing {
 
     @Override
     public void close() {
-        MsgQueue.clear();
-	msgQueueFile.clear();
+        // TODO
     }
 
     @Override
@@ -111,7 +110,7 @@ public class QueueMessageProcessing implements MessageProcessing {
         queue = new Thread(this.ReadFromQueue);
         queue.start();
 
-	queueFile = new Thread(ReadFromQueueWrite);
+        queueFile = new Thread(ReadFromQueueWrite);
         queueFile.start();
     }
 

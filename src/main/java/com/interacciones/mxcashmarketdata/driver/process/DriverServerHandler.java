@@ -110,12 +110,12 @@ public class DriverServerHandler extends IoHandlerAdapter {
             long time = System.currentTimeMillis();
             int data = br.read();
             int count = 1;
-
+            
             while (data != -1) {
                 char theChar = (char) data;
                 strbuf.append(theChar);
                 count++;
-
+                
                 if (data == 13) {
                     count = 0;
                     long tmpSequence = 0;
