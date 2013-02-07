@@ -19,6 +19,8 @@
 
 package com.interacciones.mxcashmarketdata.mama.queue;
 
+import com.interacciones.mxcashmarketdata.driver.util.Parameters;
+import com.interacciones.mxcashmarketdata.driver.util.Sequence;
 import com.interacciones.mxcashmarketdata.mama.message.Parser;
 import com.interacciones.mxcashmarketdata.mama.util.ListPublisher;
 import com.wombat.mama.*;
@@ -32,21 +34,24 @@ public class SendMessageToMama {
     protected final static Log LOGGER = LogFactory.getLog(SendMessageToMama.class);
     private String midd = "avis";
     //private String topic = "MAMAS_TOPIC";
-    private String topic = "TOPIC";
+    //private String topicNormal = "MAMA_TOPIC";
+    private static String _topicNormal = "", _topicSetrib = "";
     private static String namePub = "pru";
     private static MamaBridge bridge = null;
     private static MamaTransport mamaTransport = null;
     private static MamaTransportTopicListener topicListener = null;
-    private static MamaMsg mamaMsg = null;
-    private static MamaPublisher subscrip = null;
-    private static SimpleDateFormat formato = null;
+    private static MamaMsg mamaMsg = null, mamaMsgSetrib = null;
+    private static MamaPublisher publisher = null;
+    private static SimpleDateFormat format = null;
     private ListPublisher listPublisher = null;
 
-    //private static StringBuffer strbuf = null;
+    private static boolean _pubNormal = false, _pubSetrib = false;
 
     public SendMessageToMama() {
         listPublisher = ListPublisher.getInstance();
-        formato = new SimpleDateFormat("H:mm:ss");
+        format = new SimpleDateFormat("H:mm:ss");
+
+        ResetTopicos();
 
         bridge = Mama.loadBridge(midd);
         LOGGER.debug("At this point the middleware configurations are loaded.");
@@ -58,6 +63,7 @@ public class SendMessageToMama {
         mamaTransport.addTransportTopicListener(topicListener);
         mamaTransport.create(namePub, bridge);
         mamaMsg = new MamaMsg();
+        mamaMsgSetrib = new MamaMsg();
 
         /**
          * Routing topic to mama
@@ -68,38 +74,70 @@ public class SendMessageToMama {
     public void sendMessage(Parser message) {
 	String typeMessage = message.TypeMessage().trim();
         if (typeMessage.equals("O") || typeMessage.equals("DO")) {
-            msgO_OD(message);
+            msgO_OD( message );
         } else {
+            LOGGER.debug( "Message type '" + typeMessage + "' DISCARDED" );
+            //System.out.println( "Message type '" + typeMessage + "' DISCARDED" );
             //TODO
         }
     }
 
     private void msgO_OD(Parser message) {
-        mamaMsg.clear();
-        //mamaMsg.addU32("MessageNo", 10001, tmpSequence);
-        String emisora = message.Emisora().trim();
-        mamaMsg.addString("PublisherTopic", 10002, emisora.concat(message.Serie().concat(message.TypeValue())));
-        mamaMsg.addString("QouteTimestamp", 10004, formato.format(new Date()));
-        MamaPrice askPrice = new MamaPrice();
-        askPrice.add(message.AskPrice());
-        mamaMsg.addPrice("AskPrice", 10005, askPrice);
-        MamaPrice bidPrice = new MamaPrice();
-        bidPrice.add(message.BidPrice());
-        mamaMsg.addPrice("BidPrice", 10006, bidPrice);
-        mamaMsg.addI64("AskSize", 10007, message.AskSize());
-        mamaMsg.addI64("BidSize", 10008, message.BidSize());
 
-        /**
-         * publisher for topic
-         */
-        subscrip = listPublisher.get(emisora);
-        subscrip.send(mamaMsg);
+        if( _pubNormal ){
+            mamaMsg.clear();
+            //mamaMsg.addU32("MessageNo", 10001, tmpSequence);
+            String emisora = message.Emisora().trim();
+            mamaMsg.addString("PublisherTopic", 10002, emisora.concat(message.Serie().concat(message.TypeValue())));
+            mamaMsg.addString("QouteTimestamp", 10004, format.format(new Date()));
+            MamaPrice askPrice = new MamaPrice();
+            askPrice.add(message.AskPrice());
+            mamaMsg.addPrice("AskPrice", 10005, askPrice);
+            MamaPrice bidPrice = new MamaPrice();
+            bidPrice.add(message.BidPrice());
+            mamaMsg.addPrice("BidPrice", 10006, bidPrice);
+            mamaMsg.addI64("AskSize", 10007, message.AskSize());
+            mamaMsg.addI64("BidSize", 10008, message.BidSize());
+
+            publisher = listPublisher.get( _topicNormal );
+            publisher.send(mamaMsg);
+        }
+        if( _pubSetrib ){
+            mamaMsgSetrib.clear();
+            //mamaMsgSetrib.addString( "MessageNo", 10001, message.Emisora().trim() );
+            mamaMsgSetrib.addString( "MessageNo", 10001, message.getCompleteMsg() );
+
+            publisher = listPublisher.get( _topicSetrib );
+            publisher.send(mamaMsgSetrib);
+        }
+        
+        Sequence.setSequence( message.getSequence() );
+        System.out.print("\rMensaje " + message.getSequence() + "                                                                 " );
     }
 
     public void close() {
         mamaTransport.destroy();
         listPublisher.clear();
         Mama.close();
+    }
+
+    /**Loads topic names*/
+    public static synchronized void ResetTopicos(){
+        //Normal publishing?
+        _topicNormal = Parameters.getParam( "TopicoNormalizado" );
+        _pubNormal = _topicNormal != null;
+        if( _pubNormal )
+            System.out.println( "Normalized publishing in topic: " + _topicNormal );
+        else
+            System.out.println( "NO Normalized publishing" );
+
+        //Setrib publishing?
+        _topicSetrib = Parameters.getParam( "TopicoSetrib" );
+        _pubSetrib = _topicSetrib != null;
+        if( _pubSetrib )
+            System.out.println( "Setrib publishing in topic: " + _topicSetrib );
+        else
+            System.out.println( "NO Setrib publishing" );
     }
 }
 

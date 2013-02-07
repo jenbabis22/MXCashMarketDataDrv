@@ -23,6 +23,8 @@ package com.interacciones.mxcashmarketdata.driver.process.impl;
 
 import com.interacciones.mxcashmarketdata.driver.process.DriverServerHandler;
 import com.interacciones.mxcashmarketdata.driver.process.MessageProcessing;
+import com.interacciones.mxcashmarketdata.driver.util.Parameters;
+import com.interacciones.mxcashmarketdata.driver.util.MessageType;
 import com.interacciones.mxcashmarketdata.mama.message.KMessage;
 import com.interacciones.mxcashmarketdata.mama.message.OMessage;
 import com.interacciones.mxcashmarketdata.mama.message.PMessage;
@@ -70,7 +72,7 @@ public class QueueMessageProcessing implements MessageProcessing {
     }
 
     @Override
-    public void receive(String message) {
+    public void receive( String message, long sequence ) {
 	/**
     	 * message in file
     	 */
@@ -81,25 +83,35 @@ public class QueueMessageProcessing implements MessageProcessing {
     	 */
         String typeMessage = message.substring(MSG_TYPE, MSG_TYPE + 2).trim();
         LOGGER.debug("Type Message: " + typeMessage);
+        Parameters.LogMensaje( message );
 
-        String NewMsg = message.substring(MSG_TYPE);
-        if (typeMessage.equals(MSG_O) || typeMessage.equals(MSG_DO)) {
-            OMessage MSG = new OMessage(NewMsg);
-            MsgQueue.add(MSG);
-            LOGGER.debug("Emisora " + MSG.Emisora());
-        } else if (typeMessage.equals(MSG_P)) {
-            PMessage MSG = new PMessage(NewMsg);
-            MsgQueue.add(MSG);
-            LOGGER.debug("Emisora " + MSG.Emisora());
-        } else if (typeMessage.equals(MSG_K)) {
-            KMessage MSG = new KMessage(NewMsg);
-            MsgQueue.add(MSG);
-            LOGGER.debug("Emisora " + MSG.Emisora());
-        } else {
-            //TODO
+        if( Parameters.Publish() ){
+            String NewMsg = message.substring( MSG_TYPE );
+            if( ( typeMessage.equals( MSG_O ) && MessageType.O.esPublicable() )
+             || ( typeMessage.equals( MSG_DO ) && MessageType.DO.esPublicable() ) ) {
+                OMessage MSG = new OMessage( NewMsg );
+                MSG.setSequence( sequence );
+                MSG.setCompleteMsg( message );
+                MsgQueue.add( MSG );
+                LOGGER.debug( "Emisora " + MSG.Emisora() );
+            } else if( typeMessage.equals( MSG_P ) && MessageType.P.esPublicable() ) {
+                PMessage MSG = new PMessage(NewMsg);
+                MSG.setSequence( sequence );
+                MSG.setCompleteMsg( message );
+                MsgQueue.add( MSG );
+                LOGGER.debug( "Emisora " + MSG.Emisora() );
+            } else if( typeMessage.equals( MSG_K ) && MessageType.P.esPublicable() ) {
+                KMessage MSG = new KMessage( NewMsg );
+                MSG.setSequence( sequence );
+                MSG.setCompleteMsg( message );
+                MsgQueue.add( MSG );
+                LOGGER.debug( "Emisora " + MSG.Emisora() );
+            } else {
+                //TODO
+                LOGGER.info( "Mensaje descartado de tipo " + typeMessage );
+            }
         }
     }
-
     @Override
     public void close() {
         // TODO
@@ -112,6 +124,12 @@ public class QueueMessageProcessing implements MessageProcessing {
 
         queueFile = new Thread(ReadFromQueueWrite);
         queueFile.start();
+    }
+	
+	private boolean ValidaCS( String message ){
+        boolean res = true;
+        //ToDO
+        return res;
     }
 
     //Parse Data

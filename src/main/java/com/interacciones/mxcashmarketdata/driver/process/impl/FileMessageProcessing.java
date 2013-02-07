@@ -54,7 +54,7 @@ public class FileMessageProcessing implements MessageProcessing {
     }
 
     @Override
-    public void receive(String message) {
+    public void receive(String message, long sequence) {
         try {
             bf.write(message.concat("-".concat(formato.format(new Date()))));
             bf.write(13);
