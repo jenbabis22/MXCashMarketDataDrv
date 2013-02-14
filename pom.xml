@@ -6,6 +6,7 @@
     <artifactId>mxcashmarketdata</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
+    
 
     <name>mxcashmarketdata</name>
     <url>http://maven.apache.org</url>
@@ -24,18 +25,6 @@
         <name>Interacciones Casa de Bolsa, S.A. de C.V. Grupo Financiero Interacciones</name>
         <url>http://www.interacciones.com/</url>
     </organization>
-    <!--distributionManagement>
-        <repository>
-            <id>dropbox</id>
-            <url>http://my-repository-maven.googlecode.com/svn</url>
-        </repository>
-    </distributionManagement>
-    <repositories>
-        <repository>
-            <id>dropbox</id>
-            <url>http://my-repository-maven.googlecode.com/svn</url>
-        </repository>
-    </repositories-->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
