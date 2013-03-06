@@ -1,4 +1,4 @@
-// $Id$
+// $Id: 5d27e77750662053c48f59edb91e8913f3bb3f61 $
 // MXCashMarketDataDrv - An OpenMama based driver for the Mexican Cash Market Binary Feed
 // SPT Software contribution
 /*
@@ -30,8 +30,14 @@ public enum MessageType{
     O( "O", true ),
     DO( "DO", true ),
     K( "K", true ),
-    P( "P", true );
-
+    P( "P", true ),
+    DP( "DP", true ),
+    O1( "O1", true ),
+    D1( "D1", true ),
+    Type2( "2", true ),
+    U( "U", true ),
+    E( "E", true );
+    
     private String IdType;
     private boolean publishable; // True if can be published
 
