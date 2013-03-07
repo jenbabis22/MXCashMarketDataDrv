@@ -22,6 +22,7 @@ package com.interacciones.mxcashmarketdata.driver.process;
 import com.interacciones.mxcashmarketdata.driver.model.MessageRetransmission;
 import com.interacciones.mxcashmarketdata.driver.process.impl.QueueMessageProcessing;
 import com.interacciones.mxcashmarketdata.driver.util.CountSequence;
+import com.interacciones.mxcashmarketdata.driver.util.Sequence;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -33,6 +34,8 @@ import org.apache.mina.filter.ssl.SslFilter;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 //This class takes in binary streams of data from the BMV, translates the character data into strings using a buffer. 
 
@@ -42,7 +45,9 @@ public class DriverServerHandler extends IoHandlerAdapter {
     private static CountSequence countSequence;
     private static long globlaCount;
     private static boolean flagRetransmission = true;
+    private static boolean _openedSocket = true;
     private static StringBuffer strbuf = null;
+    private static SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yy hh:mm:ss.SSS" );
 
     private static int MSG_LENGTH = 250;
     private static int MSG_SEQUENCE = 243;
@@ -53,9 +58,16 @@ public class DriverServerHandler extends IoHandlerAdapter {
     public DriverServerHandler() {
         //Singleton
         countSequence = CountSequence.getInstance();
+        long iSecuencia = Sequence.getSequence();
+        
+        if( iSecuencia > 0 )
+            countSequence.setValue( iSecuencia + 1 );
+
+        Thread persist = new Thread( this.PersistSequence );
+        persist.start();
+        //persiste.join();
 
         messageProcessing.init();
-
     }
 
     @Override
@@ -81,6 +93,7 @@ public class DriverServerHandler extends IoHandlerAdapter {
         strbuf = new StringBuffer();
         globlaCount = 0;
 
+        System.out.println( "**Connection opened**" );
         LOGGER.info("OPENED");
     }
 
@@ -110,12 +123,12 @@ public class DriverServerHandler extends IoHandlerAdapter {
             long time = System.currentTimeMillis();
             int data = br.read();
             int count = 1;
-            
+
             while (data != -1) {
                 char theChar = (char) data;
                 strbuf.append(theChar);
                 count++;
-                
+
                 if (data == 13) {
                     count = 0;
                     long tmpSequence = 0;
@@ -134,10 +147,10 @@ public class DriverServerHandler extends IoHandlerAdapter {
                              * Sending message File, OpenMama, Queuing
                              * Implement Interface MessageProcessing
                              */
-                            messageProcessing.receive(strbuf.toString().substring(sizestrbuf - MSG_LENGTH, sizestrbuf));
-
+                            messageProcessing.receive(strbuf.toString().substring( sizestrbuf - MSG_LENGTH, sizestrbuf ), tmpSequence );
                             flagRetransmission = true;
                         } else if (flagRetransmission) {
+                            System.out.print( "\r[" + df.format( new Date() ) + "] Sequence retransmission: " + myMsgSequence );
                             MessageRetransmission msgRetra = new MessageRetransmission();
                             msgRetra.setSequencelong(myMsgSequence);
                             msgRetra.MsgConstruct();
@@ -165,5 +178,56 @@ public class DriverServerHandler extends IoHandlerAdapter {
             System.exit(1);
         }
     }
-}
 
+    /**
+     * cmd Sets a new sequence
+     * @param newSeq New value
+     */
+    public static synchronized void setSequence( long newSeq ){
+        countSequence.setValue( newSeq );
+        myMsgSequence = countSequence.next();
+        LOGGER.info( "Sequence reset to:" + myMsgSequence );
+    }
+
+    /**
+     * cmd Obtiene el valor actual de la secuencia
+     * @return valor de la secuencia
+     */
+    public static synchronized long getSequence(  ){
+        //return countSequence.getValue();
+        return myMsgSequence;
+    }
+
+    /**
+     * cmd Forces a retransmission request from a given sequence value
+     * @param newSeq new sequence value
+     */
+    public static synchronized void forceRetrans( long newSeq ){
+        countSequence.setValue( newSeq );
+        myMsgSequence = -1;
+        LOGGER.info( "Sequence reset to: " + myMsgSequence + " with forced retransmission." );
+    }
+
+    /**
+     * Switches between open a closed socket (receiving messages or not)
+     * @param open True to open socket.
+     */
+    public static synchronized void switchSocket( boolean open ){
+        _openedSocket = open;
+        if( !open ){
+            //System.out.println( "Socket closed. " );
+            LOGGER.info( "Request to close socket received." );
+        }
+        else{
+            //System.out.println( "Socket opened. " );
+            LOGGER.info( "Request to open socket received." );
+        }
+    }
+
+    /** Instancia para el metodo que persiste la secuencia en mxcashmarket.sequence */
+    Runnable PersistSequence = new Runnable() {
+        public void run() {
+            Sequence.PersistSeq( );
+        }
+    };
+}

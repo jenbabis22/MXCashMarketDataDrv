@@ -45,7 +45,7 @@ public class QueueWriteFile {
 
             while (it.hasNext()) {
                 String msg = (String) it.next();
-                messageProcessing.receive(msg.toString());
+                //messageProcessing.receive(msg.toString());
                 msgQueue.poll();
             }
 
