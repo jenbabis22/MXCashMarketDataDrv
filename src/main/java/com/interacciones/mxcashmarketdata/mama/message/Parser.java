@@ -21,6 +21,8 @@ package com.interacciones.mxcashmarketdata.mama.message;
 
 public class Parser {
     private String Message;
+    private String CompleteMsg;
+    private long sequence;
 
     public Parser(String message) {
         this.Message = message;
@@ -60,6 +62,22 @@ public class Parser {
 
     public String QuoteTime() {
         return "";
+    }
+
+    public void setSequence( long sec ){
+        this.sequence = sec;
+    }
+
+    public long getSequence( ){
+        return this.sequence;
+    }
+
+    public void setCompleteMsg( String  msg ){
+        this.CompleteMsg = msg;
+    }
+
+    public String getCompleteMsg(){
+        return this.CompleteMsg;
     }
 }
 

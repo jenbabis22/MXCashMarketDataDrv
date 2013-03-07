@@ -29,28 +29,32 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DriverServer {
     protected final static Log LOGGER = LogFactory.getLog(DriverServer.class);
     private static int PORT = 1626;
+    private static long _SEQUENCE = 1, _COTARX = 0;
+    private static IoAcceptor _acceptor;
 
     /**
      * @param args
      */
     public static void main(String[] args) throws IOException {
         init(args);
-        IoAcceptor acceptor = new NioSocketAcceptor();
+        _acceptor = new NioSocketAcceptor();
 
-
-        acceptor.getFilterChain().addLast("logger", new LoggingFilter());
+        _acceptor.getFilterChain().addLast("logger", new LoggingFilter());
         //acceptor.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName( "UTF-8" ))));
 
-        acceptor.setHandler(new DriverServerHandler());
+        _acceptor.setHandler(new DriverServerHandler(  ));
 
-        acceptor.getSessionConfig().setReadBufferSize(65536);
-        acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
-        acceptor.bind(new InetSocketAddress(PORT));
+        _acceptor.getSessionConfig().setReadBufferSize(65536);
+        _acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
+        _acceptor.bind(new InetSocketAddress(PORT));
         LOGGER.info("Mina Server Socket Initiated");
+        System.out.println("--> Version 1.0.1  Build date: 23/01/2013 <--\n" );
     }
 
     private static void init(String[] args) {
@@ -62,5 +66,36 @@ public class DriverServer {
             }
         }
     }
-}
 
+    /**
+     * Cierra el socket actual y crea uno nuevo con en mismo handler
+     * @throws IOException
+     */
+    public static void ResetConnection() throws IOException{
+        IoAcceptor newAcceptor = new NioSocketAcceptor();
+        
+        newAcceptor.getFilterChain().addLast("logger", new LoggingFilter());
+        newAcceptor.setHandler( _acceptor.getHandler() );
+        _acceptor.dispose();
+        newAcceptor.getSessionConfig().setReadBufferSize(65536);
+        newAcceptor.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, 10 );
+        newAcceptor.bind( new InetSocketAddress( PORT ) );
+        LOGGER.info("Mina Server Socket ReInitiated");
+    }
+
+    /**
+     * Establece un nuevo valor para el puerto. Se toma para la siguiente inicializacion del socket.
+     * @param port Valor del puerto
+     */
+    public static void setPort(int port){
+        PORT = port;
+    }
+
+    /**
+     * Obtiene el valor para el puerto.
+     * @return Valor del puerto
+     */
+    public static int getPort(){
+        return PORT;
+    }
+}
