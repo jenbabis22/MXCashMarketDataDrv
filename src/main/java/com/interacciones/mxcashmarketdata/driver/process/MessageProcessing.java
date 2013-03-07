@@ -20,8 +20,7 @@
 package com.interacciones.mxcashmarketdata.driver.process;
 
 public interface MessageProcessing {
-    public void receive(String message);
-
+    public void receive(String message, long sequence);
     public void close();
 
     public void init();
