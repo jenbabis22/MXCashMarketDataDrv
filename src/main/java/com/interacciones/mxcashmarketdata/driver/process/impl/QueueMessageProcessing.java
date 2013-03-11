@@ -31,6 +31,8 @@ import com.interacciones.mxcashmarketdata.driver.queue.QueueWriteFile;
 import com.interacciones.mxcashmarketdata.mama.message.EMessage;
 import com.interacciones.mxcashmarketdata.mama.message.Type2Message;
 import com.interacciones.mxcashmarketdata.mama.message.UMessage;
+import com.interacciones.mxcashmarketdata.mama.message.XMessage;
+import com.interacciones.mxcashmarketdata.mama.message.YMessage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -139,6 +141,22 @@ public class QueueMessageProcessing implements MessageProcessing {
 
             } else if (typeMessage.equals(MSG_2) && MessageType.Type2.esPublicable()) {
                 Type2Message MSG = new Type2Message(NewMsg);
+                MSG.setSequence(sequence);
+                MSG.setCompleteMsg(message);
+                MsgQueue.add(MSG);
+                LOGGER.debug("Emisora " + MSG.Emisora());
+                System.out.println("Message type: " + MSG.TypeMessage() + " processed ");
+
+            } else if (typeMessage.equals(MSG_X) && MessageType.X.esPublicable()) {
+                XMessage MSG = new XMessage(NewMsg);
+                MSG.setSequence(sequence);
+                MSG.setCompleteMsg(message);
+                MsgQueue.add(MSG);
+                LOGGER.debug("Emisora " + MSG.Emisora());
+                System.out.println("Message type: " + MSG.TypeMessage() + " processed ");
+
+            }else if (typeMessage.equals(MSG_Y) && MessageType.Y.esPublicable()) {
+                YMessage MSG = new YMessage(NewMsg);
                 MSG.setSequence(sequence);
                 MSG.setCompleteMsg(message);
                 MsgQueue.add(MSG);

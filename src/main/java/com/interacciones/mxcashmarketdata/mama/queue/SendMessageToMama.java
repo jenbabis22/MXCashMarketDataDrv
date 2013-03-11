@@ -85,6 +85,10 @@ public class SendMessageToMama {
             msgK(message);
         } else if (typeMessage.equals("2")) {
             msg2(message);
+        } else if (typeMessage.equals("X")) {
+            msgX(message);
+        } else if (typeMessage.equals("Y")) {
+            msgY(message);
         } else {
             LOGGER.debug("Message type '" + typeMessage + "' DISCARDED");
             System.out.println("Message type '" + typeMessage + "' DISCARDED");
@@ -109,7 +113,7 @@ public class SendMessageToMama {
             mamaMsg.addPrice("BidPrice", 10006, bidPrice);
             mamaMsg.addI64("AskSize", 10007, message.AskSize());
             mamaMsg.addI64("BidSize", 10008, message.BidSize());
-            
+
 
             publisher = listPublisher.get(_topicNormal);
             publisher.send(mamaMsg);
@@ -211,6 +215,45 @@ public class SendMessageToMama {
     }
 
     private void msgK(Parser message) {
+        if (_pubNormal) {
+            mamaMsg.clear();
+            String emisora = message.Emisora().trim();
+            mamaMsg.addString("PublisherTopic", 10002, emisora.concat(message.Serie().concat(message.TypeValue())));
+            mamaMsg.addString("QouteTimestamp", 10004, format.format(new Date()));
+
+            publisher = listPublisher.get(_topicNormal);
+            publisher.send(mamaMsg);
+        }
+        if (_pubSetrib) {
+            mamaMsgSetrib.clear();
+            mamaMsgSetrib.addString("MessageNo", 10001, message.getCompleteMsg());
+
+            publisher = listPublisher.get(_topicSetrib);
+            publisher.send(mamaMsgSetrib);
+        }
+    }
+
+    private void msgX(Parser message) {
+        if (_pubNormal) {
+            mamaMsg.clear();
+            String emisora = message.Emisora().trim();
+            mamaMsg.addString("PublisherTopic", 10002, emisora.concat(message.Serie().concat(message.TypeValue())));
+            mamaMsg.addString("QouteTimestamp", 10004, format.format(new Date()));
+
+            publisher = listPublisher.get(_topicNormal);
+            publisher.send(mamaMsg);
+        }
+        if (_pubSetrib) {
+            mamaMsgSetrib.clear();
+            mamaMsgSetrib.addString("MessageNo", 10001, message.getCompleteMsg());
+
+            publisher = listPublisher.get(_topicSetrib);
+            publisher.send(mamaMsgSetrib);
+        }
+    }
+
+    private void msgY(Parser message) {
+
         if (_pubNormal) {
             mamaMsg.clear();
             String emisora = message.Emisora().trim();
