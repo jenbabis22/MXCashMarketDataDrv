@@ -172,27 +172,29 @@ reported bug on maven that affects exactly those libraries -->
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>SPT</groupId>
-            <artifactId>xmlrpc-client</artifactId>
-            <version>3.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>S</groupId>
-            <artifactId>xmlrpc-server</artifactId>
-            <version>3.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>SPT</groupId>
-            <artifactId>xmlrpc-common</artifactId>
-            <version>3.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>SPT</groupId>
-            <artifactId>ws-commons-util</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-    </dependencies>
-    <build>
+             <groupId>org.apache.xmlrpc</groupId>
+             <artifactId>xmlrpc-client</artifactId>
+             <version>3.1.3</version>
+         </dependency>
+         <dependency>
+             <groupId>org.apache.xmlrpc</groupId>
+             <artifactId>xmlrpc-server</artifactId>
+             <version>3.1.3</version>
+         </dependency>
+         <dependency>
+             <groupId>org.apache.xmlrpc</groupId>
+             <artifactId>xmlrpc-common</artifactId>
+             <version>3.1.3</version>
+         </dependency>
+         <dependency>
+             <groupId>org.apache.ws.commons.util</groupId>
+             <artifactId>ws-commons-util</artifactId>
+             <version>1.0.2</version>
+         </dependency>
+     </dependencies>
+            
+                      
+      <build>
         <finalName>mx-cash-marketdata-driver</finalName>
         <plugins>
             <plugin>
