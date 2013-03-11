@@ -129,8 +129,7 @@ reported bug on maven that affects exactly those libraries -->
                     <groupId>org.apache.mina</groupId>
                     <artifactId>mina-core</artifactId>
                 </exclusion>
-                <exclusion>
-                    
+                <exclusion>                    
                     <groupId>org.apache.mina</groupId>
                     <artifactId>mina-integration-beans</artifactId>
                 </exclusion>
